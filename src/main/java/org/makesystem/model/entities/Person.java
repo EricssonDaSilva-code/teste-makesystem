@@ -1,7 +1,8 @@
-package org.makesystem.entities;
+package org.makesystem.model.entities;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.plaf.SplitPaneUI;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -9,11 +10,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 
-public class Person implements Comparable<Person> {
+public class Person implements Comparable<Person>, Serializable {
+
+    public static final long serialVersionUID = 1L;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
+    private Integer id;
     private String name;
     private long document;
     private Date birthDate;
@@ -28,6 +33,22 @@ public class Person implements Comparable<Person> {
         this.document = document;
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
+    }
+
+    public Person(Integer id, String name, long document, Date birthDate, long phoneNumber) {
+        this.id = id;
+        this.name = name;
+        this.document = document;
+        this.birthDate = birthDate;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -62,29 +83,41 @@ public class Person implements Comparable<Person> {
         this.phoneNumber = phoneNumber;
     }
 
-    public static boolean testArray(String[] array) {
-        String[] nameTeste = array[0].trim().split(" ");
+    public static boolean nameTest(String name) {
+        String[] nameTeste = name.trim().split(" ");
         if (nameTeste.length < 2) {
             return false;
-        }
-        else {
-            for (int i = 0; i < nameTeste.length; i ++) {
+        } else {
+            for (int i = 0; i < nameTeste.length; i++) {
                 if (nameTeste[i].replaceAll("[^a-zA-Z]*", "").length() <= 1) {
                     return false;
                 }
             }
         }
-        String documentTest = array[1].trim().replaceAll("[^0-9]*", "");
-        if (!(documentTest.length() == 11 || documentTest.length() == 14)) {
-            return false;
-        }
+        return true;
+    }
 
-        String phoneNumberTest = array[3].trim().replaceAll("[^0-9]*", "");
+    public static boolean phoneNumberTest(String phoneNumber) {
+        String phoneNumberTest = phoneNumber.trim().replaceAll("[^0-9]*", "");
         if (phoneNumberTest.length() < 11) {
             return false;
         }
+        return true;
+    }
 
-        String birthdateTest = array[2];
+    public static boolean documentTest(String document) {
+        String documentTest = document.trim().replaceAll("[^0-9]*", "");
+        if (documentTest.length() == 11 || documentTest.length() == 14) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    public static boolean birthDayTest(String birthday) {
+        String birthdateTest = birthday;
         String dateFormat = "dd/MM/yyyy";
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat);
         try {
@@ -93,7 +126,17 @@ public class Person implements Comparable<Person> {
         } catch (DateTimeParseException e) {
             return false;
         }
+    }
 
+    public static boolean objectTest(Set<Person> personSet, String document) {
+        long documentTest = Long.parseLong(document.trim().replaceAll("[^0-9]*",  ""));
+        for (Person person : personSet) {
+            if (person.document == documentTest) {
+                return false;
+            }
+
+        }
+        return true;
     }
 
     @Override
