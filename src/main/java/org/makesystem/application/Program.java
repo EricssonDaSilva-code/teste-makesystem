@@ -17,22 +17,20 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
-import static java.lang.Long.parseLong;
-
 public class Program {
     public static void main(String[] args) throws ParseException {
 
-        Scanner sc = new Scanner(System.in);
-
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Person person = new Person();
-        System.out.println("Digite o Caminho do arquivo: ");
-        String path = sc.nextLine();
+        String path = "C:\\Users\\dasil\\IdeaProjects\\teste-makesystem\\src\\main\\java\\org\\makesystem\\desafio_junior.csv";
         int contadorInvalidos = 0, contadorRepetidos = 0;
 
         PersonDao personDao = DaoFactory.createPersonDao();
 
         Set<Person> personSetDB = personDao.findAll();
+        for (Person p : personSetDB) {
+            System.out.println(p);
+        }
         Set<Person> personSetCSV = new HashSet<>();
 
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "ISO-8859-1"))) {
@@ -42,9 +40,9 @@ public class Program {
             while (line != null) {
                 String[] array = line.split(";");
                 boolean t1 = Person.nameTest(array[0]);
-                boolean  t2 = Person.documentTest(array[1]);
-                boolean  t3 = Person.birthDayTest(array[2]);
-                boolean  t4 = Person.phoneNumberTest(array[3]);
+                boolean t2 = Person.documentTest(array[1]);
+                boolean t3 = Person.birthDayTest(array[2]);
+                boolean t4 = Person.phoneNumberTest(array[3]);
 
                 if (!t1 || !t2 || !t3 || !t4) {
                     line = bufferedReader.readLine();
@@ -77,7 +75,7 @@ public class Program {
         }
         System.out.println("============================================================");
         System.out.println("Lista de registros importados: ");
-        for (Person person1 : personSetDB) {
+        for (Person person1 : personSetCSV) {
             personDao.insert(person1);
             System.out.println(person1);
         }
