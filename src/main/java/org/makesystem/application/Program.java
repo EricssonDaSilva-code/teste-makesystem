@@ -19,7 +19,6 @@ import java.util.Set;
 public class Program {
     public static void main(String[] args) throws ParseException {
 
-
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Person person = new Person();
         String path = "C:\\Users\\dasil\\IdeaProjects\\teste-makesystem\\src\\main\\java\\org\\makesystem\\desafio_junior.csv";
@@ -97,6 +96,16 @@ public class Program {
         }
         sum = sum / personSet.size();
 
+
+        //Contador de PJ
+        int contPJ = 0;
+        for (Person p : personSet) {
+            String document = String.valueOf(p.getDocument());
+            if (document.length() == 14) {
+                contPJ += 1;
+            }
+        }
+
         // contando os números de São Paulo
         int contadorSP = 0;
         for (Person p : personSet) {
@@ -112,7 +121,7 @@ public class Program {
 
         System.out.println("============================================================");
         System.out.println("Média de idade: " + sum);
-        System.out.println("Total de PJ: " + contadorPJ);
+        System.out.println("Total de PJ: " + contPJ);
         System.out.println("Registros inválidos: " + contadorInvalidos);
         System.out.println("Registros repetidos: " + contadorRepetidos);
         System.out.println("Telefones de SP: " + contadorSP);
