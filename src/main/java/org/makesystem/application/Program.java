@@ -35,36 +35,28 @@ public class Program {
         Set<Person> personSetDB = personDao.findAll();
         Set<Person> personSetCSV = new HashSet<>();
 
-
-        int contadorPJ = 0;
-
-        boolean t1, t2, t3, t4, t5;
-
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "ISO-8859-1"))) {
 
             String line = bufferedReader.readLine();
 
             while (line != null) {
                 String[] array = line.split(";");
-                t1 = Person.nameTest(array[0]);
-                t2 = Person.documentTest(array[1]);
-                t3 = Person.birthDayTest(array[2]);
-                t4 = Person.phoneNumberTest(array[3]);
+                boolean t1 = Person.nameTest(array[0]);
+                boolean  t2 = Person.documentTest(array[1]);
+                boolean  t3 = Person.birthDayTest(array[2]);
+                boolean  t4 = Person.phoneNumberTest(array[3]);
 
                 if (!t1 || !t2 || !t3 || !t4) {
                     line = bufferedReader.readLine();
                     contadorInvalidos += 1;
                 } else {
-                    t5 = Person.objectTest(personSetDB, array[1]);
+                    boolean t5 = Person.objectTest(personSetDB, array[1]);
                     if (!t5) {
                         line = bufferedReader.readLine();
                     } else {
 
                         String name = array[0].trim();
                         long document = Long.parseLong(array[1].trim().replaceAll("[^0-9]*", ""));
-                        if (array[1].length() == 14) {
-                            contadorPJ += 1;
-                        }
                         LocalDate birthDate = LocalDate.from(dtf.parse(array[2].trim()));
                         long phoneNumber = Long.parseLong(array[3].trim().replaceAll("[^0-9]*", ""));
 
