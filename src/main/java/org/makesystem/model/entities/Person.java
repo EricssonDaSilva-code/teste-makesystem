@@ -2,10 +2,7 @@ package org.makesystem.model.entities;
 
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.plaf.SplitPaneUI;
 import java.io.Serializable;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -82,7 +79,6 @@ public class Person implements Comparable<Person>, Serializable {
     public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
     public static boolean nameTest(String name) {
         String[] nameTeste = name.trim().split(" ");
         if (nameTeste.length < 2) {
@@ -96,7 +92,6 @@ public class Person implements Comparable<Person>, Serializable {
         }
         return true;
     }
-
     public static boolean phoneNumberTest(String phoneNumber) {
         String phoneNumberTest = phoneNumber.trim().replaceAll("[^0-9]*", "");
         if (phoneNumberTest.length() < 11) {
@@ -104,7 +99,6 @@ public class Person implements Comparable<Person>, Serializable {
         }
         return true;
     }
-
     public static boolean documentTest(String document) {
         String documentTest = document.trim().replaceAll("[^0-9]*", "");
         if (documentTest.length() == 11 || documentTest.length() == 14) {
@@ -115,7 +109,6 @@ public class Person implements Comparable<Person>, Serializable {
         }
 
     }
-
     public static boolean birthDayTest(String birthday) {
         String birthdateTest = birthday;
         String dateFormat = "dd/MM/yyyy";
@@ -127,7 +120,6 @@ public class Person implements Comparable<Person>, Serializable {
             return false;
         }
     }
-
     public static boolean objectTest(Set<Person> personSet, String document) {
         long documentTest = Long.parseLong(document.trim().replaceAll("[^0-9]*",  ""));
         for (Person person : personSet) {

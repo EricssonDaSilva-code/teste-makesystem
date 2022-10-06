@@ -6,8 +6,6 @@ import org.makesystem.model.dao.PersonDao;
 import org.makesystem.model.entities.Person;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
