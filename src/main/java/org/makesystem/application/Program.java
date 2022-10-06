@@ -4,17 +4,22 @@ import org.makesystem.model.dao.DaoFactory;
 import org.makesystem.model.dao.PersonDao;
 import org.makesystem.model.entities.Person;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.*;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Program {
     public static void main(String[] args) throws ParseException {
 
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Person person = new Person();
         String path = "C:\\Users\\dasil\\IdeaProjects\\teste-makesystem\\src\\main\\java\\org\\makesystem\\desafio_junior.csv";
         int contadorInvalidos = 0, contadorRepetidos = 0;
@@ -23,6 +28,8 @@ public class Program {
 
         Set<Person> personSet = personDao.findAll();
         Set<Person> personSetBr = new HashSet<>();
+
+
 
         int contadorPJ = 0;
 
@@ -55,7 +62,7 @@ public class Program {
                         if (array[1].length() == 14) {
                             contadorPJ +=1;
                         }
-                        Date birthDate = sdf.parse(array[2].trim());
+                        LocalDate birthDate = LocalDate.from(dtf.parse(array[2].trim()));
                         long phoneNumber = Long.parseLong(array[3].trim().replaceAll("[^0-9]*", ""));
 
                         Person newPerson = new Person(name, document, birthDate, phoneNumber);
@@ -72,27 +79,24 @@ public class Program {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
         }
         System.out.println("============================================================");
         System.out.println("Lista de registros importados: ");
-        for (Person person1 : personSetBr) {
+        for (Person person1 : personSet) {
             personDao.insert(person1);
             System.out.println(person1);
         }
         System.out.println("============================================================");
         System.out.println();
 
+        //média de idades
         int sum = 0;
-
         for (Person p : personSet) {
-            long date = p.getBirthDate().getTime();
-            long date2 = LocalDate.now().getYear();
-            long idade = date2 - date;
-            sum += idade;
+            sum += Period.between(p.getBirthDate(), LocalDate.now()).getYears();
         }
+        sum = sum / personSet.size();
 
+        // contando os números de São Paulo
         int contadorSP = 0;
         for (Person p : personSet) {
             Long array = p.getPhoneNumber();
@@ -109,7 +113,7 @@ public class Program {
 
 
         System.out.println("============================================================");
-        System.out.println("Média de idade: "  );
+        System.out.println("Média de idade: " + sum);
         System.out.println("Total de PJ: " + contadorPJ);
         System.out.println("Registros inválidos: " + contadorInvalidos);
         System.out.println("Registros repetidos: " + contadorRepetidos);

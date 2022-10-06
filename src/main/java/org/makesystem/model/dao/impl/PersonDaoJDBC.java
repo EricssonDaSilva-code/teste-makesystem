@@ -6,11 +6,15 @@ import org.makesystem.model.dao.PersonDao;
 import org.makesystem.model.entities.Person;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
 public class PersonDaoJDBC implements PersonDao {
 
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private Connection connection;
 
     public PersonDaoJDBC(Connection connetion) {
@@ -30,7 +34,7 @@ public class PersonDaoJDBC implements PersonDao {
 
             st.setString(1, obj.getName());
             st.setLong(2, obj.getDocument());
-            st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+            st.setDate(3, java.sql.Date.valueOf(obj.getBirthDate()));
             st.setLong(4, obj.getPhoneNumber());
 
             int rowsAffected = st.executeUpdate();
@@ -64,7 +68,7 @@ public class PersonDaoJDBC implements PersonDao {
 
             st.setString(1, obj.getName());
             st.setLong(2, obj.getDocument());
-            st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+            st.setDate(3, java.sql.Date.valueOf(obj.getBirthDate()));
             st.setLong(4, obj.getPhoneNumber());
             st.setLong(6, obj.getId());
 
@@ -112,7 +116,7 @@ public class PersonDaoJDBC implements PersonDao {
                 obj.setId(rs.getInt("id"));
                 obj.setName(rs.getString("name_person"));
                 obj.setDocument(rs.getLong("document_person"));
-                obj.setBirthDate(rs.getDate("birthdate"));
+                obj.setBirthDate(rs.getDate("birthdate").toLocalDate());
                 obj.setPhoneNumber(rs.getLong("phonenumber"));
                 personSet.add(obj);
             }

@@ -4,11 +4,11 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.plaf.SplitPaneUI;
 import java.io.Serializable;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,26 +16,26 @@ public class Person implements Comparable<Person>, Serializable {
 
     public static final long serialVersionUID = 1L;
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private static DateTimeFormatter dtf= DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private Integer id;
     private String name;
     private long document;
-    private Date birthDate;
+    private LocalDate birthDate;
     private long phoneNumber;
 
     public Person() {
 
     }
 
-    public Person(String name, long document, Date birthDate, long phoneNumber) {
+    public Person(String name, long document, LocalDate birthDate, long phoneNumber) {
         this.name = name;
         this.document = document;
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
     }
 
-    public Person(Integer id, String name, long document, Date birthDate, long phoneNumber) {
+    public Person(Integer id, String name, long document, LocalDate birthDate, long phoneNumber) {
         this.id = id;
         this.name = name;
         this.document = document;
@@ -67,11 +67,11 @@ public class Person implements Comparable<Person>, Serializable {
         this.document = document;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -162,6 +162,5 @@ public class Person implements Comparable<Person>, Serializable {
         Integer document1 = (int) document;
         return document1.compareTo((int) other.document);
     }
-
 
 }
