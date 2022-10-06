@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Program {
@@ -99,16 +100,13 @@ public class Program {
         // contando os números de São Paulo
         int contadorSP = 0;
         for (Person p : personSet) {
-            Long array = p.getPhoneNumber();
-            String array2 = String.format(String.valueOf(array));
-            int a1 = (int) array2.charAt(0);
-            int a2 = (int) array2.charAt(1);
-            boolean b = a1 == 1 && a2 == 1;
-            if (b) {
+            String phonenumber = String.valueOf(p.getPhoneNumber());
+            String[] array = phonenumber.split("");
+            String  firstNumber = array[0];
+            String secondNumber = array[1];
+            if (Objects.equals(firstNumber, "1") && Objects.equals(secondNumber, "1")) {
                 contadorSP += 1;
             }
-
-
         }
 
 
