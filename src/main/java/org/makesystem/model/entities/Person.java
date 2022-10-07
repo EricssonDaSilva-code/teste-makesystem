@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -120,10 +121,14 @@ public class Person implements Comparable<Person>, Serializable {
             return false;
         }
     }
-    public static boolean objectTest(Set<Person> personSet, String document) {
-        String documentTest = document.trim().replaceAll("[^0-9]*",  "");
-        for (Person person : personSet) {
-            if (person.document == documentTest) {
+    public static boolean objectTest(String array) {
+        String documentTest = null;
+        if (array.length() == 14 || array.length() == 11) {
+            documentTest = array.trim().replaceAll("[^0-9]*",  "");
+        }
+        Set<String> set = new HashSet<>();
+        for (String s : set) {
+            if (s.equals(documentTest)) {
                 return false;
             }
 

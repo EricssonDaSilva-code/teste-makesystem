@@ -30,6 +30,7 @@ public class Program {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String path = Paths.get("src/main/resources/").resolve("desafio_junior.csv").toAbsolutePath().toString();
         int contadorInvalidos = 0;
+        int contadorRepetidos = 0;
 
         PersonDao personDao = DaoFactory.createPersonDao();
 
@@ -37,18 +38,26 @@ public class Program {
 
         List<Person> personListR = new ArrayList<>();
 
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "ISO-8859-1"))) {
+        List<String> documentSet = new ArrayList<>();
+        List<String> phoneSet = new ArrayList<>();
+
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path),
+                "ISO-8859-1"))) {
 
             String line = bufferedReader.readLine();
 
             while (line != null) {
                 String[] array = line.split(";");
 
-
                 boolean t1 = Person.nameTest(array[0]);
                 boolean t2 = Person.documentTest(array[1]);
                 boolean t3 = Person.birthDayTest(array[2]);
                 boolean t4 = Person.phoneNumberTest(array[3]);
+                boolean t5 = Person.documentTest(array[1]);
+
+                if (!t5) {
+                    contadorRepetidos += 1;
+                }
 
                 if (!t1 || !t2 || !t3 || !t4) {
                     line = bufferedReader.readLine();
@@ -87,6 +96,7 @@ public class Program {
         if (cont == personListR.size()) {
             System.out.println("==== SEM REGISTROS A IMPORTAR ====");
         }
+
 
 
         System.out.println("============================================================");
@@ -141,15 +151,22 @@ public class Program {
         }
 
 
+
         System.out.println("============================================================");
         System.out.println("Média de idade: " + sum);
         System.out.println("Total de PF: " + contPF);
         System.out.println("Total de PJ: " + contPJ);
         System.out.println("Registros inválidos: " + contadorInvalidos);
-        System.out.println("Registros repetidos: " + contPe);
+        System.out.println("Registros repetidos: " + contPe + "." + "Registros repetidos no total " + contadorRepetidos);
         System.out.println("Telefones de SP: " + contadorSP);
         System.out.println("============================================================");
 
 
+        System.out.println("Lista integral");
+
+
+
     }
+
+
 }
