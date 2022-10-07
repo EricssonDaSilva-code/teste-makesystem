@@ -7,9 +7,7 @@ import org.makesystem.model.entities.Person;
 
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class PersonDaoJDBC implements PersonDao {
@@ -27,15 +25,15 @@ public class PersonDaoJDBC implements PersonDao {
         try {
             st = connection.prepareStatement(
                     "INSERT INTO tbl_persons "
-                            + "(name_person, document_person, birthdate, phonenumber)"
+                            + "(name_person, document_person, bithdate, phonenumber)"
                             + "VALUES"
                             + "(?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
 
             st.setString(1, obj.getName());
-            st.setLong(2, obj.getDocument());
+            st.setString(2, obj.getDocument());
             st.setDate(3, java.sql.Date.valueOf(obj.getBirthDate()));
-            st.setLong(4, obj.getPhoneNumber());
+            st.setString(4, obj.getPhoneNumber());
 
             int rowsAffected = st.executeUpdate();
 
@@ -63,13 +61,13 @@ public class PersonDaoJDBC implements PersonDao {
         try {
             st = connection.prepareStatement(
                     "UPDATE tbl_person "
-                            + "SET name_person = ?, document_person = ?, birthdate = ?, phonenumber = ? "
+                            + "SET name_person = ?, document_person = ?, bithdate = ?, phonenumber = ? "
                             + "WHERE document_person = ?");
 
             st.setString(1, obj.getName());
-            st.setLong(2, obj.getDocument());
+            st.setString(2, obj.getDocument());
             st.setDate(3, java.sql.Date.valueOf(obj.getBirthDate()));
-            st.setLong(4, obj.getPhoneNumber());
+            st.setString(4, obj.getPhoneNumber());
             st.setLong(6, obj.getId());
 
             st.executeUpdate();
@@ -115,9 +113,9 @@ public class PersonDaoJDBC implements PersonDao {
                 Person obj = new Person();
                 obj.setId(rs.getInt("id"));
                 obj.setName(rs.getString("name_person"));
-                obj.setDocument(rs.getLong("document_person"));
-                obj.setBirthDate(rs.getDate("birthdate").toLocalDate());
-                obj.setPhoneNumber(rs.getLong("phonenumber"));
+                obj.setDocument(rs.getString("document_person"));
+                obj.setBirthDate(rs.getDate("bithdate").toLocalDate());
+                obj.setPhoneNumber(rs.getString("phonenumber"));
                 personSet.add(obj);
             }
             return personSet;

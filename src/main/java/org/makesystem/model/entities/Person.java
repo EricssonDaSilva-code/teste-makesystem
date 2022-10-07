@@ -17,22 +17,22 @@ public class Person implements Comparable<Person>, Serializable {
 
     private Integer id;
     private String name;
-    private long document;
+    private String document;
     private LocalDate birthDate;
-    private long phoneNumber;
+    private String phoneNumber;
 
     public Person() {
 
     }
 
-    public Person(String name, long document, LocalDate birthDate, long phoneNumber) {
+    public Person(String name, String document, LocalDate birthDate, String phoneNumber) {
         this.name = name;
         this.document = document;
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
     }
 
-    public Person(Integer id, String name, long document, LocalDate birthDate, long phoneNumber) {
+    public Person(Integer id, String name, String document, LocalDate birthDate, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.document = document;
@@ -56,11 +56,11 @@ public class Person implements Comparable<Person>, Serializable {
         this.name = name;
     }
 
-    public long getDocument() {
+    public String getDocument() {
         return document;
     }
 
-    public void setDocument(long document) {
+    public void setDocument(String document) {
         this.document = document;
     }
 
@@ -72,11 +72,11 @@ public class Person implements Comparable<Person>, Serializable {
         this.birthDate = birthDate;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
     public static boolean nameTest(String name) {
@@ -121,7 +121,7 @@ public class Person implements Comparable<Person>, Serializable {
         }
     }
     public static boolean objectTest(Set<Person> personSet, String document) {
-        long documentTest = Long.parseLong(document.trim().replaceAll("[^0-9]*",  ""));
+        String documentTest = document.trim().replaceAll("[^0-9]*",  "");
         for (Person person : personSet) {
             if (person.document == documentTest) {
                 return false;
@@ -141,14 +141,13 @@ public class Person implements Comparable<Person>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return document == person.document;
+        return Objects.equals(document, person.document);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(document);
     }
-
 
     @Override
     public int compareTo(@NotNull Person o) {

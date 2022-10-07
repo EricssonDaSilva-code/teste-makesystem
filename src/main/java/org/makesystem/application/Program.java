@@ -56,9 +56,9 @@ public class Program {
                 } else {
 
                     String name = array[0].trim();
-                    long document = Long.parseLong(array[1].trim().replaceAll("[^0-9]*", ""));
+                    String document = array[1].trim().replaceAll("[^0-9]*", "");
                     LocalDate birthDate = LocalDate.from(dtf.parse(array[2].trim()));
-                    long phoneNumber = Long.parseLong(array[3].trim().replaceAll("[^0-9]*", ""));
+                    String phoneNumber = array[3].trim().replaceAll("[^0-9]*", "");
 
                     Person newPerson = new Person(name, document, birthDate, phoneNumber);
 
@@ -103,7 +103,7 @@ public class Program {
         int contPF = 0;
         for (Person p : personSetDB) {
             String document = String.valueOf(p.getDocument());
-            if (document.length() <= 11) {
+            if (document.length() == 11) {
                 contPF += 1;
             }
         }
@@ -112,7 +112,7 @@ public class Program {
         int contPJ = 0;
         for (Person p : personSetDB) {
             String document = String.valueOf(p.getDocument());
-            if (document.length() >= 13) {
+            if (document.length() == 14) {
                 contPJ += 1;
             }
         }
@@ -131,7 +131,7 @@ public class Program {
         // contando os números de São Paulo
         int contadorSP = 0;
         for (Person p : personSetDB) {
-            String phone = String.valueOf(p.getPhoneNumber());
+            String phone = p.getPhoneNumber();
             String[] array = phone.split("");
             String firstNumber = array[0];
             String secondNumber = array[1];
