@@ -2,6 +2,7 @@ package org.makesystem.db;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.Properties;
 
@@ -35,7 +36,8 @@ public class DB {
     }
 
     private static Properties loadProperties() {
-        try (FileInputStream fs = new FileInputStream("C:\\Users\\dasil\\IdeaProjects\\teste-makesystem\\src\\main\\resources\\db.properties")) {
+        try (FileInputStream fs = new FileInputStream(Paths.get("src/main/resources/")
+                .resolve("db.properties").toAbsolutePath().toString())) {
             Properties props = new Properties();
             props.load(fs);
             return props;

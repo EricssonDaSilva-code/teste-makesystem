@@ -150,9 +150,9 @@ public class Person implements Comparable<Person>, Serializable {
     }
 
     @Override
-    public int compareTo(@NotNull Person other) {
-        Integer document1 = (int) document;
-        return document1.compareTo((int) other.document);
+    public int compareTo(Person other) {
+        Long document1 = (long) document;
+        return document1.compareTo((long) other.document);
     }
 
 }
