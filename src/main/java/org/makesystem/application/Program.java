@@ -36,8 +36,6 @@ public class Program {
         Set<Person> personSetDB = personDao.findAll();
 
         List<Person> personListR = new ArrayList<>();
-        List<String> documentlist = new ArrayList<>();
-        List<String> phoneList = new ArrayList<>();
 
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "ISO-8859-1"))) {
 
@@ -45,12 +43,7 @@ public class Program {
 
             while (line != null) {
                 String[] array = line.split(";");
-                if (array[1].replaceAll("[^0-9]*", "").matches("[0-9]*")) {
-                    documentlist.add(array[1].replaceAll("[^0-9]*", ""));
-                }
-                if (array[3].matches("[0-9]*")) {
-                    phoneList.add(array[3].replaceAll("[^0-9]", ""));
-                }
+
 
                 boolean t1 = Person.nameTest(array[0]);
                 boolean t2 = Person.documentTest(array[1]);
@@ -90,6 +83,9 @@ public class Program {
                 personDao.insert(p);
                 System.out.println(p);
             }
+        }
+        if (cont == personListR.size()) {
+            System.out.println("==== SEM REGISTROS A IMPORTAR ====");
         }
 
 
