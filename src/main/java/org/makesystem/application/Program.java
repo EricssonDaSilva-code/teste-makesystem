@@ -87,8 +87,7 @@ public class Program {
         for (Person p : personListR) {
             if (personSetDB.add(p) != true) {
                 cont += 1;
-            }
-            else {
+            } else {
                 personDao.insert(p);
                 System.out.println(p);
             }
@@ -96,7 +95,6 @@ public class Program {
         if (cont == personListR.size()) {
             System.out.println("==== SEM REGISTROS A IMPORTAR ====");
         }
-
 
 
         System.out.println("============================================================");
@@ -132,9 +130,9 @@ public class Program {
         int contPe = 0;
         Set<Person> contP = new HashSet<>();
         for (Person p : personListR) {
-           if (contP.add(p) == false) {
-               contPe += 1;
-           }
+            if (contP.add(p) == false) {
+                contPe += 1;
+            }
         }
 
 
@@ -145,11 +143,16 @@ public class Program {
             String[] array = phone.split("");
             String firstNumber = array[0];
             String secondNumber = array[1];
-            if (Objects.equals(firstNumber, "1") && Objects.equals(secondNumber, "1")) {
-                contadorSP += 1;
-            }
-        }
+            String[] ddd = {"11", "12", "13", "14", "15", "16", "17", "18", "19"};
+            String ddd2 = firstNumber + secondNumber;
+            for (int i = 0; i <= 8; i++) {
+                if (Objects.equals(ddd2, ddd[i])) {
+                    contadorSP += 1;
+                }
 
+            }
+
+        }
 
 
         System.out.println("============================================================");
@@ -163,7 +166,6 @@ public class Program {
 
 
         System.out.println("Lista integral");
-
 
 
     }
