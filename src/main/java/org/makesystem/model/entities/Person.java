@@ -149,10 +149,9 @@ public class Person implements Comparable<Person>, Serializable {
         return Objects.hash(document);
     }
 
-    @Override
-    public int compareTo(Person other) {
-        Long document1 = (long) document;
-        return document1.compareTo((long) other.document);
-    }
 
+    @Override
+    public int compareTo(@NotNull Person o) {
+        return 0;
+    }
 }

@@ -11,7 +11,7 @@ public class Apagar {
         PersonDao personDao = DaoFactory.createPersonDao();
         Set<Person> personSetDB = personDao.findAll();
 
-        for (int i = 1124; i <= 1163 ; i ++) {
+        for (int i = 1124; i <= 3000 ; i ++) {
             personDao.deleteById(i);
         }
 

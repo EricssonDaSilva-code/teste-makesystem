@@ -7,7 +7,9 @@ import org.makesystem.model.entities.Person;
 
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class PersonDaoJDBC implements PersonDao {

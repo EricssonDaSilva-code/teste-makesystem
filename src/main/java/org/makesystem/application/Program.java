@@ -29,16 +29,15 @@ public class Program {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String path = Paths.get("src/main/resources/").resolve("desafio_junior.csv").toAbsolutePath().toString();
-        int contadorInvalidos = 0, contadorRepetidos = 0;
+        int contadorInvalidos = 0;
 
         PersonDao personDao = DaoFactory.createPersonDao();
 
         Set<Person> personSetDB = personDao.findAll();
-        for (Person p : personSetDB) {
-            System.out.println(p);
-        }
-        Set<Person> personSetCSV = new TreeSet<>();
+
         List<Person> personListR = new ArrayList<>();
+        List<String> documentlist = new ArrayList<>();
+        List<String> phoneList = new ArrayList<>();
 
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "ISO-8859-1"))) {
 
@@ -46,6 +45,13 @@ public class Program {
 
             while (line != null) {
                 String[] array = line.split(";");
+                if (array[1].replaceAll("[^0-9]*", "").matches("[0-9]*")) {
+                    documentlist.add(array[1].replaceAll("[^0-9]*", ""));
+                }
+                if (array[3].matches("[0-9]*")) {
+                    phoneList.add(array[3].replaceAll("[^0-9]", ""));
+                }
+
                 boolean t1 = Person.nameTest(array[0]);
                 boolean t2 = Person.documentTest(array[1]);
                 boolean t3 = Person.birthDayTest(array[2]);
@@ -56,17 +62,17 @@ public class Program {
                     contadorInvalidos += 1;
                 } else {
 
-                        String name = array[0].trim();
-                        long document = Long.parseLong(array[1].trim().replaceAll("[^0-9]*", ""));
-                        LocalDate birthDate = LocalDate.from(dtf.parse(array[2].trim()));
-                        long phoneNumber = Long.parseLong(array[3].trim().replaceAll("[^0-9]*", ""));
+                    String name = array[0].trim();
+                    long document = Long.parseLong(array[1].trim().replaceAll("[^0-9]*", ""));
+                    LocalDate birthDate = LocalDate.from(dtf.parse(array[2].trim()));
+                    long phoneNumber = Long.parseLong(array[3].trim().replaceAll("[^0-9]*", ""));
 
-                        Person newPerson = new Person(name, document, birthDate, phoneNumber);
+                    Person newPerson = new Person(name, document, birthDate, phoneNumber);
 
-                        personListR.add(newPerson);
-                        personSetCSV.add(newPerson);
-                        line = bufferedReader.readLine();
-                    }
+                    personListR.add(newPerson);
+
+                    line = bufferedReader.readLine();
+                }
 
             }
 
@@ -75,25 +81,27 @@ public class Program {
         }
         System.out.println("============================================================");
         System.out.println("Lista de registros importados: ");
-
-        for (Person p : personSetCSV) {
-            if (personSetDB.contains(p)) {
-                System.out.println("repetido");
-            }else {
-                personSetDB.add(p);
+        int cont = 0;
+        for (Person p : personListR) {
+            if (personSetDB.add(p) != true) {
+                cont += 1;
+            }
+            else {
+                personDao.insert(p);
                 System.out.println(p);
             }
-
         }
+
+
         System.out.println("============================================================");
         System.out.println();
 
         //média de idades
         int sum = 0;
-        for (Person p : personSetCSV) {
+        for (Person p : personSetDB) {
             sum += Period.between(p.getBirthDate(), LocalDate.now()).getYears();
         }
-        sum = sum / personSetCSV.size();
+        sum = sum / personSetDB.size();
 
         //contador PF
         int contPF = 0;
@@ -114,17 +122,21 @@ public class Program {
         }
 
 
-
         //Contador repetidos
-        int n1 = personListR.size() - personSetDB.size();
-
+        int contPe = 0;
+        Set<Person> contP = new HashSet<>();
+        for (Person p : personListR) {
+           if (contP.add(p) == false) {
+               contPe += 1;
+           }
+        }
 
 
         // contando os números de São Paulo
         int contadorSP = 0;
         for (Person p : personSetDB) {
-            String phonenumber = String.valueOf(p.getPhoneNumber());
-            String[] array = phonenumber.split("");
+            String phone = String.valueOf(p.getPhoneNumber());
+            String[] array = phone.split("");
             String firstNumber = array[0];
             String secondNumber = array[1];
             if (Objects.equals(firstNumber, "1") && Objects.equals(secondNumber, "1")) {
@@ -138,9 +150,10 @@ public class Program {
         System.out.println("Total de PF: " + contPF);
         System.out.println("Total de PJ: " + contPJ);
         System.out.println("Registros inválidos: " + contadorInvalidos);
-        System.out.println("Registros repetidos: " + n1);
+        System.out.println("Registros repetidos: " + contPe);
         System.out.println("Telefones de SP: " + contadorSP);
         System.out.println("============================================================");
+
 
     }
 }
